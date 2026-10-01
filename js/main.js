@@ -34,41 +34,38 @@ tourCards.forEach((card) => {
 
         tourCards.forEach((otherCard) => {
 
-            otherCard.classList.remove("is-expanded");
+            if (otherCard !== card) {
 
-            const otherButton =
-                otherCard.querySelector(".tour-expand");
+                otherCard.classList.remove("is-expanded");
 
-            if (otherButton) {
-                otherButton.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
+                const otherButton =
+                    otherCard.querySelector(".tour-expand");
 
-                otherButton.textContent =
-                    "View experience →";
+                if (otherButton) {
+                    otherButton.textContent =
+                        "View Experience";
+                }
             }
-
         });
 
 
         /*
-         * If the clicked tour wasn't already open,
-         * open it.
+         * Toggle the selected tour.
          */
 
-        if (!isExpanded) {
+        if (isExpanded) {
+
+            card.classList.remove("is-expanded");
+
+            button.textContent =
+                "View Experience";
+
+        } else {
 
             card.classList.add("is-expanded");
 
-            button.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-
             button.textContent =
-                "Close experience ↑";
-
+                "Close Experience";
         }
 
     });
@@ -77,64 +74,30 @@ tourCards.forEach((card) => {
 
 
 /* =========================================================
-   02. WHATSAPP
-   =========================================================
-   
-   IMPORTANT:
-   Replace the placeholder number below with the
-   official Explora Osa WhatsApp number.
-
-   Costa Rica country code = 506
-
-   Example format:
-   506XXXXXXXX
-
-   Do NOT include +, spaces, parentheses or dashes.
+   02. SMOOTH NAVIGATION
+   Makes the navigation links scroll smoothly
+   to each section.
    ========================================================= */
 
-const exploraWhatsApp =
-    "506XXXXXXXX";
-
-
-const whatsappButton =
-    document.getElementById("whatsapp-button");
-
-
-if (whatsappButton) {
-
-    const whatsappMessage =
-        encodeURIComponent(
-            "Hola! I found Explora Osa online and I'd like to learn more about your tours."
-        );
-
-
-    whatsappButton.href =
-        `https://wa.me/${exploraWhatsApp}?text=${whatsappMessage}`;
-
-}
-
-
-/* =========================================================
-   03. SMOOTH NAVIGATION
-   =========================================================
-   
-   Keeps internal navigation feeling natural,
-   especially on mobile.
-   ========================================================= */
-
-const internalLinks =
+const navigationLinks =
     document.querySelectorAll(
         'a[href^="#"]'
     );
 
 
-internalLinks.forEach((link) => {
+navigationLinks.forEach((link) => {
 
     link.addEventListener("click", (event) => {
 
         const targetId =
             link.getAttribute("href");
 
+
+        /*
+         * Ignore empty "#" links.
+         * This is especially useful for the WhatsApp
+         * button until the real WhatsApp link is added.
+         */
 
         if (
             !targetId ||
@@ -148,9 +111,7 @@ internalLinks.forEach((link) => {
             document.querySelector(targetId);
 
 
-        if (!target) {
-            return;
-        }
+        if (!target) return;
 
 
         event.preventDefault();
@@ -167,60 +128,118 @@ internalLinks.forEach((link) => {
 
 
 /* =========================================================
-   04. TOUR IMAGE FALLBACK
-   =========================================================
-   
-   If a photo hasn't been uploaded yet, the broken
-   image icon is hidden instead of making the site
-   look unfinished.
+   03. WHATSAPP BUTTON
+   The actual WhatsApp number will be added later.
+   For now the button remains inactive so we don't
+   accidentally send visitors to the wrong number.
    ========================================================= */
 
-const tourImages =
-    document.querySelectorAll(
-        ".tour-image img"
-    );
+const whatsappButton =
+    document.querySelector("#whatsapp-button");
 
 
-tourImages.forEach((image) => {
+if (whatsappButton) {
 
-    image.addEventListener(
-        "error",
-        () => {
+    whatsappButton.addEventListener(
+        "click",
+        (event) => {
 
-            image.style.display = "none";
+            const href =
+                whatsappButton.getAttribute("href");
+
+
+            if (
+                !href ||
+                href === "#"
+            ) {
+                event.preventDefault();
+
+                console.log(
+                    "WhatsApp link has not been added yet."
+                );
+            }
 
         }
     );
-
-});
-
-
-/* =========================================================
-   05. CURRENT YEAR
-   =========================================================
-   
-   If we later add a dynamic year element to the
-   footer, this will automatically update it.
-   ========================================================= */
-
-const currentYear =
-    document.querySelector(
-        "[data-current-year]"
-    );
-
-
-if (currentYear) {
-
-    currentYear.textContent =
-        new Date().getFullYear();
 
 }
 
 
 /* =========================================================
-   06. PAGE READY
+   04. ACTIVE NAVIGATION STATE
+   Adds a small active state to navigation links
+   based on the section currently visible.
    ========================================================= */
 
-document.documentElement.classList.add(
-    "js-ready"
+const sections =
+    document.querySelectorAll(
+        "section[id]"
+    );
+
+const navLinks =
+    document.querySelectorAll(
+        ".main-nav a"
+    );
+
+
+const updateActiveNavigation =
+    () => {
+
+        let currentSection = "";
+
+
+        sections.forEach((section) => {
+
+            const sectionTop =
+                section.offsetTop - 180;
+
+            const sectionHeight =
+                section.offsetHeight;
+
+            const scrollPosition =
+                window.scrollY;
+
+
+            if (
+                scrollPosition >= sectionTop &&
+                scrollPosition < sectionTop + sectionHeight
+            ) {
+                currentSection =
+                    section.getAttribute("id");
+            }
+
+        });
+
+
+        navLinks.forEach((link) => {
+
+            link.classList.remove("active");
+
+            const href =
+                link.getAttribute("href");
+
+
+            if (
+                href === `#${currentSection}`
+            ) {
+                link.classList.add("active");
+            }
+
+        });
+
+    };
+
+
+window.addEventListener(
+    "scroll",
+    updateActiveNavigation
 );
+
+
+/* =========================================================
+   05. PAGE LOAD
+   Make sure the correct navigation state is shown
+   immediately when the page loads.
+   ========================================================= */
+
+updateActiveNavigation();
