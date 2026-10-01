@@ -574,9 +574,11 @@ p {
 .tour-image {
     position: relative;
 
+    height: 440px;
     min-height: 440px;
 
     overflow: hidden;
+}
 }
 
 .tour-image::after {
@@ -601,11 +603,11 @@ p {
     height: 100%;
 
     object-fit: cover;
-
     object-position: center;
 
     transition:
         transform 700ms ease;
+
 }
 
 .tour-card:hover .tour-image img {
@@ -1121,10 +1123,12 @@ p {
         min-height: auto;
     }
 
-    .tour-image {
-        min-height: 280px;
+        .tour-image {
+    height: 280px;
+    min-height: 280px;
 
-        aspect-ratio: 4 / 3;
+    aspect-ratio: 4 / 3;
+}
     }
 
     .tour-content {
