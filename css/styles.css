@@ -1422,6 +1422,82 @@ button:focus-visible {
     .booking-area > .book-tour-button {
         width: 100%;
     }
+
+.explora-booking {
+  margin-top: 24px;
+  text-align: center;
 }
+
+.explora-booking-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 0 30px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #405746;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.explora-booking-button:hover {
+  background: #edf2ed;
+  transform: translateY(-1px);
+}
+
+.explora-booking-button svg {
+  display: block;
+  width: 19px;
+  height: 19px;
+  fill: #25D366;
+  flex: 0 0 19px;
+}
+
+.explora-booking-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.explora-booking-options[hidden] {
+  display: none !important;
+}
+
+.explora-booking-contact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  color: inherit;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.explora-booking-contact:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 650px) {
+  .explora-booking-options {
+    flex-direction: column;
+  }
+
+  .explora-booking-contact {
+    width: 100%;
+  }
+}
+
 
 
