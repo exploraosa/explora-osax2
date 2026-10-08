@@ -1272,3 +1272,33 @@ button:focus-visible {
 
     pointer-events: none;
 }
+
+/* SOCIAL MEDIA ICONS */
+
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    opacity: 0.8;
+    transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.social-links a:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.social-links img {
+    display: block;
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
