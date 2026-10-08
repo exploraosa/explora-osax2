@@ -1302,3 +1302,46 @@ button:focus-visible {
     height: 20px;
     object-fit: contain;
 }
+/* WHATSAPP CONTACT LINKS */
+
+.whatsapp-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    border: 1px solid var(--green-300);
+    border-radius: 999px;
+    color: var(--green-700);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: background 200ms ease, color 200ms ease;
+}
+
+.whatsapp-link:hover {
+    background: var(--green-700);
+    color: var(--white);
+}
+
+.general-whatsapp {
+    justify-content: center;
+}
+
+@media (max-width: 650px) {
+    .tour-whatsapp {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tour-whatsapp .whatsapp-link {
+        width: 100%;
+    }
+}
+
