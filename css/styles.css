@@ -1344,4 +1344,84 @@ button:focus-visible {
         width: 100%;
     }
 }
+/* TOUR BOOKING BUTTONS */
+
+.booking-area {
+    margin-top: 24px;
+}
+
+.book-tour-button,
+.booking-contact {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 11px 17px;
+    border: 1px solid var(--green-600);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--green-700);
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease;
+}
+
+.book-tour-button:hover,
+.booking-contact:hover {
+    background: var(--green-700);
+    color: var(--white);
+}
+
+.whatsapp-icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+}
+
+.booking-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.booking-options[hidden] {
+    display: none;
+}
+
+.booking-contact {
+    text-decoration: none;
+}
+
+.general-booking {
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 650px) {
+    .booking-area,
+    .booking-options {
+        width: 100%;
+    }
+
+    .book-tour-button,
+    .booking-contact {
+        min-height: 46px;
+    }
+
+    .booking-options {
+        flex-direction: column;
+    }
+
+    .booking-options .booking-contact,
+    .booking-area > .book-tour-button {
+        width: 100%;
+    }
+}
+
 
