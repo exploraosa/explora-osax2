@@ -1,78 +1,112 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     const contacts = [
-        {
-            name: "Greivin",
-            number: "50686196399"
-        },
-        {
-            name: "Hannah",
-            number: "5039430861"
-        }
+        { name: "Greivin", number: "50686196399" },
+        { name: "Hannah", number: "5039430861" }
     ];
 
-    function whatsappLink(number, message) {
+    function makeWhatsAppLink(number, message) {
         return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
     }
 
-    function createContactLinks(container, message, className = "") {
+    function createWhatsAppIcon() {
+        const icon = document.createElement("img");
+        icon.src = "https://cdn.simpleicons.org/whatsapp/25D366";
+        icon.alt = "";
+        icon.className = "whatsapp-icon";
+        icon.width = 20;
+        icon.height = 20;
+        return icon;
+    }
+
+    function addBookingOptions(container, message) {
+        const booking = document.createElement("div");
+        booking.className = "booking-area";
+
+        const bookButton = document.createElement("button");
+        bookButton.type = "button";
+        bookButton.className = "book-tour-button";
+        bookButton.appendChild(createWhatsAppIcon());
+
+        const label = document.createElement("span");
+        label.textContent = "Book this tour";
+        bookButton.appendChild(label);
+
         const options = document.createElement("div");
-        options.className = `whatsapp-options ${className}`.trim();
+        options.className = "booking-options";
+        options.hidden = true;
+
+        bookButton.setAttribute("aria-expanded", "false");
+        bookButton.addEventListener("click", () => {
+            const isOpen = !options.hidden;
+            options.hidden = isOpen;
+            bookButton.setAttribute("aria-expanded", String(!isOpen));
+        });
 
         contacts.forEach((contact) => {
             const link = document.createElement("a");
-
-            link.href = whatsappLink(contact.number, message);
+            link.href = makeWhatsAppLink(contact.number, message);
             link.target = "_blank";
             link.rel = "noopener noreferrer";
-            link.className = "whatsapp-link";
-            link.textContent = `WhatsApp ${contact.name}`;
+            link.className = "booking-contact";
+
+            link.appendChild(createWhatsAppIcon());
+
+            const text = document.createElement("span");
+            text.textContent = `Book with ${contact.name}`;
+            link.appendChild(text);
 
             options.appendChild(link);
         });
 
-        container.appendChild(options);
+        booking.appendChild(bookButton);
+        booking.appendChild(options);
+        container.appendChild(booking);
     }
 
-    // Add personalized WhatsApp links to every tour card.
+    // Booking button for each tour
     document.querySelectorAll(".tour-card").forEach((card) => {
         const title = card.querySelector("h3")?.textContent.trim();
-        const expandButton = card.querySelector(".tour-expand");
+        const content = card.querySelector(".tour-content, .tour-info");
 
-        if (!title || !expandButton) return;
+        if (!title || !content || content.querySelector(".booking-area")) {
+            return;
+        }
 
         const message =
-            `Hi! I'm interested in booking ${title} with Explora Osa. ` +
-            "Could you tell me about availability and booking?";
+            `Hi! I'm interested in booking the ${title} with Explora Osa. ` +
+            "Could you tell me about availability, pricing and booking?";
 
-        createContactLinks(
-            card.querySelector(".tour-content, .tour-info") || card,
-            message,
-            "tour-whatsapp"
-        );
+        addBookingOptions(content, message);
     });
 
-    // Add general WhatsApp options to the contact section.
+    // General WhatsApp contact options
     const contactSection = document.querySelector(
         ".contact-section, .final-cta"
     );
 
-    if (contactSection) {
-        const button = contactSection.querySelector(".button");
+    if (contactSection && !contactSection.querySelector(".general-booking")) {
+        const existingButton = contactSection.querySelector(
+            'a.button, a[href*="wa.me"]'
+        );
 
-        if (button) {
-            button.remove();
+        const container = contactSection.querySelector(
+            ".contact-container, .container"
+        ) || contactSection;
 
-            const message =
-                "Hi! I'd like to learn more about the tours and " +
-                "experiences offered by Explora Osa in Uvita, Costa Rica.";
-
-            createContactLinks(
-                contactSection.querySelector(".contact-container, .container") ||
-                    contactSection,
-                message,
-                "general-whatsapp"
-            );
+        if (existingButton) {
+            existingButton.remove();
         }
+
+        const generalBooking = document.createElement("div");
+        generalBooking.className = "general-booking";
+
+        addBookingOptions(
+            generalBooking,
+            "Hi! I'd like to learn more about the tours and experiences " +
+            "offered by Explora Osa in Uvita, Costa Rica."
+        );
+
+        container.appendChild(generalBooking);
     }
 });
