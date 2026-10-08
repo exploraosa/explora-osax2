@@ -1,76 +1,90 @@
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
   const contacts = [
     { name: "Greivin", number: "50686196399" },
     { name: "Hannah", number: "5039430861" }
   ];
 
-  function whatsappURL(number, message) {
-    return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+  function whatsappIcon() {
+    return `
+      <svg class="whatsapp-logo" viewBox="0 0 24 24"
+           aria-hidden="true">
+        <path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.13 0C5.58 0 .25 5.33.25 11.88c0 2.09.55 4.14 1.61 5.94L.15 24l6.34-1.66a11.9 11.9 0 0 0 5.64 1.43h.01c6.55 0 11.88-5.33 11.88-11.88a11.8 11.8 0 0 0-3.5-8.41ZM12.14 21.75a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.76.99 1-3.67-.24-.38a9.82 9.82 0 1 1 8.39 4.65Zm5.39-7.36c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.46-.89-.79-1.48-1.77-1.65-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.2 5.08 4.49.71.3 1.27.49 1.71.62.72.23 1.37.2 1.88.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35Z"/>
+      </svg>`;
   }
 
-  function createBooking(container, message, label = "WHATSAPP US") {
-    if (!container || container.querySelector(".explora-booking")) return;
+  function makeLink(contact, message) {
+    const link = document.createElement("a");
+    link.className = "explora-wa-option";
+    link.href =
+      "https://wa.me/" + contact.number +
+      "?text=" + encodeURIComponent(message);
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.innerHTML = whatsappIcon() +
+      "<span>WhatsApp " + contact.name + "</span>";
+    return link;
+  }
 
-    const booking = document.createElement("div");
-    booking.className = "explora-booking";
+  function addBooking(container, message, buttonText) {
+    if (!container || container.querySelector(".explora-wa-booking")) {
+      return;
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "explora-wa-booking";
 
     const button = document.createElement("button");
-    button.className = "explora-booking-button";
     button.type = "button";
-    button.innerHTML = `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.6 4.2 1.6 6L0 24l6.4-1.7a12 12 0 0 0 5.7 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.2-3.5-8.4ZM12.1 21.7a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 1 1 8.4 4.7Zm5.4-7.4c-.3-.1-1.8-.9-2.1-1-.3-.1-.5-.1-.7.2l-1 1.1c-.2.2-.4.2-.7.1a8.1 8.1 0 0 1-2.4-1.5 9 9 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.3c-.3-.6-.5-.5-.7-.5H7.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.8s1.2 3.2 1.4 3.4c.2.2 2.4 3.7 5.8 5.1.8.3 1.4.5 1.9.6.8.2 1.5.2 2 .1.6-.1 1.8-.7 2.1-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z"/>
-      </svg>
-      <span>${label}</span>
-    `;
+    button.className = "explora-wa-button";
+    button.innerHTML = whatsappIcon() +
+      "<span>" + buttonText + "</span>";
 
     const options = document.createElement("div");
-    options.className = "explora-booking-options";
+    options.className = "explora-wa-options";
     options.hidden = true;
 
-    contacts.forEach(contact => {
-      const link = document.createElement("a");
-      link.className = "explora-booking-contact";
-      link.href = whatsappURL(contact.number, message);
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.textContent = `WhatsApp ${contact.name}`;
-      options.appendChild(link);
+    contacts.forEach(function (contact) {
+      options.appendChild(makeLink(contact, message));
     });
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click", function () {
       options.hidden = !options.hidden;
+      button.setAttribute("aria-expanded", String(!options.hidden));
     });
 
-    booking.append(button, options);
-    container.appendChild(booking);
+    wrapper.appendChild(button);
+    wrapper.appendChild(options);
+    container.appendChild(wrapper);
   }
 
-  // Booking buttons for tour cards
-  document.querySelectorAll(".tour-card").forEach(card => {
+  // Add a booking button to every tour card.
+  document.querySelectorAll(".tour-card").forEach(function (card) {
     const title = card.querySelector("h3");
-    const content = card.querySelector(
-      ".tour-content, .tour-info, .tour-details"
-    );
+    const content = card.querySelector(".tour-content, .tour-info");
 
     if (!title || !content) return;
 
+    const tourName = title.textContent.trim();
     const message =
-      `Hi! I'd like to book the ${title.textContent.trim()} with Explora Osa. Please let me know the availability and details.`;
+      "Hi! I'd like to book " + tourName +
+      " with Explora Osa. Could you please tell me about availability and booking?";
 
-    createBooking(content, message, "BOOK THIS TOUR");
+    addBooking(content, message, "BOOK THIS TOUR");
   });
 
-  // General contact button at the bottom of the page
-  document.querySelectorAll(".contact-section, .final-cta").forEach(section => {
-    const content = section.querySelector(
-      ".contact-container, .container"
-    ) || section;
+  // Add the WhatsApp button to the bottom contact section.
+  document.querySelectorAll(".contact-section, .final-cta").forEach(
+    function (section) {
+      const content = section.querySelector(
+        ".contact-container, .container"
+      ) || section;
 
-    const message =
-      "Hi! I'd like to learn more about Explora Osa tours in Uvita, Costa Rica.";
-
-    createBooking(content, message, "WHATSAPP US");
-  });
+      addBooking(
+        content,
+        "Hi! I'd like to learn more about Explora Osa tours in Uvita, Costa Rica.",
+        "WHATSAPP US"
+      );
+    }
+  );
 });
