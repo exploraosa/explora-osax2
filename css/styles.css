@@ -1500,6 +1500,93 @@ button:focus-visible {
   .explora-booking-contact {
     width: 100%;
   }
+/* Explora Osa WhatsApp booking buttons */
+.explora-wa-booking {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.explora-wa-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 0 30px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #405746;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.explora-wa-button:hover {
+  background: #edf2ed;
+  transform: translateY(-1px);
+}
+
+.explora-wa-button .whatsapp-logo {
+  color: #25D366;
+}
+
+.whatsapp-logo {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+}
+
+.explora-wa-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.explora-wa-options[hidden] {
+  display: none !important;
+}
+
+.explora-wa-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 17px;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 999px;
+  color: inherit;
+  font-family: inherit;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.explora-wa-option .whatsapp-logo {
+  color: #25D366;
+}
+
+.explora-wa-option:hover {
+  background: rgba(255,255,255,.12);
+}
+
+@media (max-width: 650px) {
+  .explora-wa-options {
+    flex-direction: column;
+  }
+
+  .explora-wa-option {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
 }
 
 
