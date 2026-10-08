@@ -1,0 +1,78 @@
+
+document.addEventListener("DOMContentLoaded", () => {
+    const contacts = [
+        {
+            name: "Greivin",
+            number: "50686196399"
+        },
+        {
+            name: "Hannah",
+            number: "5039430861"
+        }
+    ];
+
+    function whatsappLink(number, message) {
+        return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+    }
+
+    function createContactLinks(container, message, className = "") {
+        const options = document.createElement("div");
+        options.className = `whatsapp-options ${className}`.trim();
+
+        contacts.forEach((contact) => {
+            const link = document.createElement("a");
+
+            link.href = whatsappLink(contact.number, message);
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.className = "whatsapp-link";
+            link.textContent = `WhatsApp ${contact.name}`;
+
+            options.appendChild(link);
+        });
+
+        container.appendChild(options);
+    }
+
+    // Add personalized WhatsApp links to every tour card.
+    document.querySelectorAll(".tour-card").forEach((card) => {
+        const title = card.querySelector("h3")?.textContent.trim();
+        const expandButton = card.querySelector(".tour-expand");
+
+        if (!title || !expandButton) return;
+
+        const message =
+            `Hi! I'm interested in booking ${title} with Explora Osa. ` +
+            "Could you tell me about availability and booking?";
+
+        createContactLinks(
+            card.querySelector(".tour-content, .tour-info") || card,
+            message,
+            "tour-whatsapp"
+        );
+    });
+
+    // Add general WhatsApp options to the contact section.
+    const contactSection = document.querySelector(
+        ".contact-section, .final-cta"
+    );
+
+    if (contactSection) {
+        const button = contactSection.querySelector(".button");
+
+        if (button) {
+            button.remove();
+
+            const message =
+                "Hi! I'd like to learn more about the tours and " +
+                "experiences offered by Explora Osa in Uvita, Costa Rica.";
+
+            createContactLinks(
+                contactSection.querySelector(".contact-container, .container") ||
+                    contactSection,
+                message,
+                "general-whatsapp"
+            );
+        }
+    }
+});
